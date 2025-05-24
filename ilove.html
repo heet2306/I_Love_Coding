@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Love You</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #ffd6e0, #ffe0ec, #ffc0cb, #ffe4e1);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+
+      /* ✅ Working visible heart PNG cursor */
+      cursor: url('https://cdn-icons-png.flaticon.com/32/833/833472.png') 16 16, auto;
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.88);
+      padding: 60px 40px;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      animation: glow 3s infinite alternate;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3.2rem;
+      color: #ff4081;
+      margin-bottom: 25px;
+      animation: pulse 2s infinite;
+    }
+
+    .buttons {
+      margin-top: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+    }
+
+    button {
+      padding: 15px 35px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #yesBtn {
+      background-color: #ff4081;
+      color: white;
+      box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    #yesBtn:hover {
+      background-color: #e60073;
+      transform: scale(1.1);
+    }
+
+    #noBtn {
+      background-color: #ccc;
+      color: black;
+      position: relative;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      color: #d10068;
+      display: none;
+      font-weight: 600;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      transform: rotate(45deg);
+      animation: floatUp 5s linear infinite;
+      opacity: 0.8;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: inherit;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-100px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+      }
+
+      100% {
+        box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
+      }
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <audio id="bgMusic" loop autoplay muted>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+  </audio>
+
+  <div class="container">
+    <h1>Do You Love Me? 💖</h1>
+    <div class="buttons">
+      <button id="yesBtn">Yes 💘</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
+    <div class="message" id="loveMessage"></div>
+  </div>
+
+  <div class="hearts" id="heartContainer"></div>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const heartContainer = document.getElementById('heartContainer');
+    const loveMessage = document.getElementById('loveMessage');
+    const bgMusic = document.getElementById('bgMusic');
+
+    function typeMessage(text, el) {
+      let i = 0;
+      el.innerHTML = '';
+      const interval = setInterval(() => {
+        el.innerHTML += text[i];
+        i++;
+        if (i === text.length) clearInterval(interval);
+      }, 60);
+    }
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.backgroundColor = ['#ff4d6d', '#ff85a2', '#ff1f8f'][Math.floor(Math.random() * 3)];
+      heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      heart.style.width = heart.style.height = `${Math.random() * 10 + 15}px`;
+      heartContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    yesBtn.addEventListener('click', () => {
+      typeMessage("Yay! I love you too! 💞 You're my favorite person! 😍", loveMessage);
+      loveMessage.style.display = 'block';
+      for (let i = 0; i < 70; i++) createHeart();
+      bgMusic.muted = false;
+    });
+
+    noBtn.addEventListener('mouseover', () => {
+      const container = document.querySelector('.container');
+      const containerRect = container.getBoundingClientRect();
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+
+      const maxX = containerRect.width - btnWidth;
+      const maxY = containerRect.height - btnHeight;
+
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
+
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
+    });
+  </script>
+</body>
+
+</html>
